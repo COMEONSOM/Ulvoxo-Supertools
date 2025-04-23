@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ForLoop.com</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <div class="container" id="cardContainer">
-    <!-- Repeat this section for each “thing” you’re aggregating -->
 
-    <section class="card" data-id="ipos" data-url="https://chatgpt.com/">
+    <!-- Main Cards -->
+    <section class="card" data-id="gpt" data-url="https://chatgpt.com/">
       <button class="star-btn">☆</button>
       <h2>ChatGPT</h2>
       <div class="img-wrapper">
@@ -19,7 +18,7 @@
       </div>
     </section>
 
-    <section class="card" data-id="gold" data-url="https://www.deepseek.com/en">
+    <section class="card" data-id="deepseek" data-url="https://www.deepseek.com/en">
       <button class="star-btn">☆</button>
       <h2>DeepSeek</h2>
       <div class="img-wrapper">
@@ -27,7 +26,7 @@
       </div>
     </section>
 
-    <section class="card" data-id="dividends" data-url="https://app.flowcv.com/resumes">
+    <section class="card" data-id="resume" data-url="https://app.flowcv.com/resumes">
       <button class="star-btn">☆</button>
       <h2>Resume Maker</h2>
       <div class="img-wrapper">
@@ -35,7 +34,7 @@
       </div>
     </section>
 
-    <section class="card" data-id="usmarket" data-url="https://playground.com/">
+    <section class="card" data-id="playground" data-url="https://playground.com/">
       <button class="star-btn">☆</button>
       <h2>PlayGround AI</h2>
       <div class="img-wrapper">
@@ -43,15 +42,15 @@
       </div>
     </section>
 
-    <section class="card" data-id="analysis" data-url="https://www.widecanvas.ai/">
+    <section class="card" data-id="canvas" data-url="https://www.widecanvas.ai/">
       <button class="star-btn">☆</button>
       <h2>WideCanvas</h2>
       <div class="img-wrapper">
-        <img src="wide.png" alt="design" />
+        <img src="wide.png" alt="design-to-reality" />
       </div>
     </section>
 
-    <section class="card" data-id="brokerage" data-url="https://animegenius.live3d.io/">
+    <section class="card" data-id="make-anime" data-url="https://animegenius.live3d.io/">
       <button class="star-btn">☆</button>
       <h2>Anime Maker</h2>
       <div class="img-wrapper">
@@ -59,6 +58,33 @@
       </div>
     </section>
 
+    <!-- Expandable Card with Nested Tools -->
+    <section class="card expandable-card">
+      <button class="star-btn">☆</button>
+      <h2>Text-to-Image Tools</h2>
+      <div class="img-wrapper">
+        <img src="TEXT.webp" alt="text-to-image" />
+      </div>
+
+      <!-- Nested Cards -->
+      <div class="container-in-container hidden" id="text2imageCards">
+        <section class="card" data-id="pixlr" data-url="https://pixlr.com/">
+          <h2>Pixlr</h2>
+          <div class="img-wrapper">
+            <img src="PIXLR.webp" alt="pixlr" />
+          </div>
+        </section>
+
+        <section class="card" data-id="piclumen" data-url="https://www.piclumen.com/text-to-image/">
+          <h2>PicLumen</h2>
+          <div class="img-wrapper">
+            <img src="PicLumen-art.jpg" alt="PicLumen-art" />
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- Standalone Cards Again -->
     <section class="card" data-id="another" data-url="https://another.com">
       <button class="star-btn">☆</button>
       <h2>Another Service</h2>
@@ -69,8 +95,6 @@
       </div>
     </section>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
-  

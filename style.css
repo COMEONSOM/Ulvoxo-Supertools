@@ -1,0 +1,143 @@
+:root {
+  --bg-white: #ffffff;
+  --text-main: #222;
+  --text-sub: #444;
+  --text-muted: #ccc;
+  --text-live: #ff0000;
+  --text-starred: gold;
+  --background-color:#0b0b0b;
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --hover-lift: -4px;
+  --border-radius: 0.5rem;
+  --highlight: #e74c3c;
+}
+
+/* Container grid */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  background-color: var(--background-color);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* Lock to 5 columns on large screens */
+@media (min-width: 1200px) {
+  .container {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Card styling */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-card);
+  padding: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-align: center;
+  min-height: 50px;
+}
+
+.card:hover {
+  transform: translateY(var(--hover-lift));
+}
+
+/* Headings */
+.card h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+/* Optional subtitle/info under h2 */
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  margin: 0.2rem 0;
+}
+
+/* Image wrapper */
+.card .img-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.card .img-wrapper img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Live indicator */
+.live {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--text-live);
+  font-weight: bold;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  animation: liveBlink 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.live::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--highlight), transparent);
+  background-size: 200% 100%;
+  animation: gradSwipe 1.5s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes gradSwipe {
+  to {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes liveBlink {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Star button */
+.star-btn {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.3s ease;
+}
+
+.star-btn.starred {
+  color: var(--text-starred);
+}

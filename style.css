@@ -11,7 +11,14 @@
   --border-radius: 0.5rem;
   --highlight: #e74c3c;
 }
-
+.logo {
+  width: 100px;
+  height: 100px;
+  display: block;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  text-indent: -9999px;
+}
 /* Main Container */
 .container {
   display: grid;

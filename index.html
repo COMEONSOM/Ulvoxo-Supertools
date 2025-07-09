@@ -1,101 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-   <img src="logo.png" alt="Company Logo" class="logo" />
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ForLoop.com</title>
+  <title>ULVOXO SUPERTOOLS</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- ========== Header ========== -->
+  <header class="site-header">
+    <div class="logo-wrapper">
+      <img src="./assets/logo-subbrand.png" alt="ULVOXO UPDATE Logo" class="site-logo" />
+    </div>
+  </header>
+
   <div class="container" id="cardContainer">
 
     <!-- Main Cards -->
     <section class="card" data-id="gpt" data-url="https://chatgpt.com/">
-      <button class="star-btn">☆</button>
+     <button class="pin-btn" title="Pin this tool">📌</button>
       <h2>ChatGPT</h2>
       <div class="img-wrapper">
-        <img src="gpt.png" alt="generative-ai-usa" />
+        <img src="./assets/gpt.png" alt="generative-ai-usa" />
       </div>
     </section>
 
     <section class="card" data-id="deepseek" data-url="https://www.deepseek.com/en">
-      <button class="star-btn">☆</button>
+       <button class="pin-btn" title="Pin this tool">📌</button>
       <h2>DeepSeek</h2>
       <div class="img-wrapper">
-        <img src="deepseek.jpg" alt="generative-ai-china" />
+        <img src="./assets/deepseek.jpg" alt="generative-ai-china" />
       </div>
     </section>
 
     <section class="card" data-id="resume" data-url="https://app.flowcv.com/resumes">
-      <button class="star-btn">☆</button>
+       <button class="pin-btn" title="Pin this tool">📌</button>
       <h2>Resume Maker</h2>
       <div class="img-wrapper">
-        <img src="resume.png" alt="resume" />
+        <img src="./assets/resume-builder.png" alt="resume" />
       </div>
     </section>
 
     <section class="card" data-id="playground" data-url="https://playground.com/">
-      <button class="star-btn">☆</button>
+      <button class="pin-btn" title="Pin this tool">📌</button>
       <h2>PlayGround AI</h2>
       <div class="img-wrapper">
-        <img src="playground.webp" alt="logo_maker" />
+        <img src="./assets/playground.webp" alt="logo_maker" />
       </div>
     </section>
 
     <section class="card" data-id="canvas" data-url="https://www.widecanvas.ai/">
-      <button class="star-btn">☆</button>
+       <button class="pin-btn" title="Pin this tool">📌</button>
       <h2>WideCanvas</h2>
       <div class="img-wrapper">
-        <img src="wide.png" alt="design-to-reality" />
+        <img src="./assets/wide.png" alt="design-to-reality" />
       </div>
     </section>
 
     <section class="card" data-id="make-anime" data-url="https://animegenius.live3d.io/">
-      <button class="star-btn">☆</button>
+       <button class="pin-btn" title="Pin this tool">📌</button>
       <h2>Anime Maker</h2>
       <div class="img-wrapper">
-        <img src="anime.jpg" alt="anime" />
+        <img src="./assets/anime.jpg" alt="anime" />
       </div>
     </section>
 
-    <!-- Expandable Card with Nested Tools -->
-    <section class="card expandable-card">
-      <button class="star-btn">☆</button>
-      <h2>Text-to-Image Tools</h2>
+    <section class="card" data-id="pixir" data-url="https://pixlr.com/">
+     <button class="pin-btn" title="Pin this tool">📌</button>
+      <h2>Pixlr</h2>
       <div class="img-wrapper">
-        <img src="TEXT.webp" alt="text-to-image" />
+        <img src="./assets/PIXLR.webp" alt="pixir" />
       </div>
+    </section>
 
-      <!-- Nested Cards -->
-      <div class="container-in-container hidden" id="text2imageCards">
-        <section class="card" data-id="pixlr" data-url="https://pixlr.com/">
-          <h2>Pixlr</h2>
-          <div class="img-wrapper">
-            <img src="PIXLR.webp" alt="pixlr" />
-          </div>
-        </section>
-
-        <section class="card" data-id="piclumen" data-url="https://www.piclumen.com/text-to-image/">
-          <h2>PicLumen</h2>
-          <div class="img-wrapper">
-            <img src="PicLumen-art.jpg" alt="PicLumen-art" />
-          </div>
-        </section>
+    <section class="card" data-id="piclumen" data-url="https://www.piclumen.com/text-to-image/">
+     <button class="pin-btn" title="Pin this tool">📌</button>
+      <h2>PicLumen</h2>
+      <div class="img-wrapper">
+        <img src="./assets/PicLumen-art.jpg" alt="PicLumen-art" />
       </div>
     </section>
 
     <!-- Standalone Cards Again -->
-    <section class="card" data-id="another" data-url="https://another.com">
-      <button class="star-btn">☆</button>
-      <h2>Another Service</h2>
-      <p>Some info about another service.</p>
-      <p class="live">LIVE</p>
-      <div class="img-wrapper">
-        <img src="another.jpg" alt="another" />
-      </div>
-    </section>
+
   </div>
+  <!-- ========== Footer ========== -->
+  <footer class="site-footer">
+    <p>&copy; 2025 ULVOXO. All rights reserved.</p>
+    <p>Made with ❤️ by Ulvoxo.</p>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>

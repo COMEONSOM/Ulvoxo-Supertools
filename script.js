@@ -1,117 +1,162 @@
 // script.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  // star-button logic (updated)
-  document.querySelectorAll('.star-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const card = btn.closest('.card');
-      const container = card.parentElement;
-      const isStarred = btn.classList.toggle('starred');
+  const PIN_KEY = 'ulvoxo_pinned_cards';
+  const ORIGINAL_ORDER_KEY = 'ulvoxo_original_order';
 
-      const starredCards = container.querySelectorAll('.star-btn.starred');
+  const container = document.getElementById('cardContainer');
+  let cards = Array.from(container.querySelectorAll('.card'));
 
-      if (isStarred) {
-        if (starredCards.length > 5) {
-          btn.classList.remove('starred');
-          alert('You can only star up to 5 cards.');
-          return;
-        }
-        // Move the card to the top
-        container.insertBefore(card, container.firstChild);
+  // Save original order if not stored
+  if (!localStorage.getItem(ORIGINAL_ORDER_KEY)) {
+    const originalOrder = cards.map(card => card.dataset.id);
+    localStorage.setItem(ORIGINAL_ORDER_KEY, JSON.stringify(originalOrder));
+  }
+
+  const originalOrder = JSON.parse(localStorage.getItem(ORIGINAL_ORDER_KEY));
+  let pinnedIds = JSON.parse(localStorage.getItem(PIN_KEY)) || [];
+
+  // ========== Re-render Cards ==========
+  function renderCards(withAnimation = true) {
+    const pinnedCards = [];
+    const unpinnedCards = [];
+
+    // Separate pinned and unpinned based on current state
+    originalOrder.forEach(id => {
+      const card = container.querySelector(`.card[data-id="${id}"]`);
+      if (!card) return;
+
+      if (pinnedIds.includes(id)) {
+        card.classList.add('pinned-card');
+        addPinBadge(card);
+        pinnedCards.push(card);
       } else {
-        // Move unstarred cards to the end
-        container.appendChild(card);
+        card.classList.remove('pinned-card');
+        removePinBadge(card);
+        unpinnedCards.push(card);
       }
     });
-  });
 
-  // redirect logic for normal cards
-  document.querySelectorAll('.card[data-url]').forEach(card => {
-    if (card.classList.contains('expandable-card')) return;
-    card.addEventListener('click', () => {
-      window.open(card.dataset.url, '_blank');
+    const newOrder = [...pinnedCards, ...unpinnedCards];
+
+    if (withAnimation) {
+      animateReorder(container, newOrder);
+    } else {
+      container.innerHTML = '';
+      newOrder.forEach(c => container.appendChild(c));
+    }
+  }
+
+  // ========== Animate Reordering ==========
+  function animateReorder(parent, newOrder) {
+    const oldRects = Array.from(parent.children).map(el => el.getBoundingClientRect());
+    parent.innerHTML = '';
+    newOrder.forEach(c => parent.appendChild(c));
+    const newRects = newOrder.map(el => el.getBoundingClientRect());
+
+    newOrder.forEach((el, i) => {
+      const deltaX = oldRects[i].left - newRects[i].left;
+      const deltaY = oldRects[i].top - newRects[i].top;
+
+      el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+      el.style.transition = 'transform 0s';
+
+      requestAnimationFrame(() => {
+        el.style.transition = 'transform 300ms ease';
+        el.style.transform = '';
+      });
     });
+  }
+
+  // ========== Pin Button Logic ==========
+  container.addEventListener('click', e => {
+    const btn = e.target.closest('.pin-btn');
+    if (!btn) return;
+
+    e.stopPropagation();
+    const card = btn.closest('.card');
+    const cardId = card.dataset.id;
+    const isPinned = btn.classList.toggle('pinned');
+
+    if (isPinned) {
+      if (!pinnedIds.includes(cardId)) pinnedIds.push(cardId);
+    } else {
+      pinnedIds = pinnedIds.filter(id => id !== cardId);
+    }
+
+    localStorage.setItem(PIN_KEY, JSON.stringify(pinnedIds));
+    renderCards();
   });
 
-  // expandable-card popup logic
-  const expandableCard = document.querySelector('.expandable-card');
-  const nestedCards    = document.getElementById('text2imageCards');
+  // ========== Card Click Redirect ==========
+  container.addEventListener('click', e => {
+    const card = e.target.closest('.card');
+    if (!card || card.classList.contains('expandable-card')) return;
+    if (e.target.closest('.pin-btn')) return; // Ignore pin button
+    const url = card.dataset.url;
+    if (url) window.open(url, '_blank');
+  });
 
-  expandableCard.addEventListener('click', async e => {
-    if (e.target.closest('.star-btn')) return;
-    if (!nestedCards) return;
+  // ========== Drag-and-Drop Reordering ==========
+  let draggedCard = null;
 
-    // create overlay & popup container
-    const overlay = document.createElement('div');
-    overlay.classList.add('popup-overlay');
+  container.addEventListener('dragstart', e => {
+    if (!e.target.classList.contains('pinned-card')) return;
+    draggedCard = e.target;
+    setTimeout(() => draggedCard.classList.add('dragging'), 0);
+  });
 
-    const popup = document.createElement('div');
-    popup.classList.add('popup-content');
+  container.addEventListener('dragover', e => {
+    e.preventDefault();
+    const afterElement = getDragAfterElement(container, e.clientY);
+    if (afterElement == null) {
+      container.insertBefore(draggedCard, container.firstChild);
+    } else {
+      container.insertBefore(draggedCard, afterElement);
+    }
+  });
 
-    // close button
-    const closeBtn = document.createElement('button');
-    closeBtn.classList.add('popup-close-btn');
-    closeBtn.textContent = '✕';
-    overlay.appendChild(closeBtn);
+  container.addEventListener('drop', () => {
+    draggedCard.classList.remove('dragging');
+    updatePinnedOrder();
+    draggedCard = null;
+  });
 
-    // clone nested cards and add click-to-open functionality
-    nestedCards.querySelectorAll('.card').forEach(card => {
-      const clone = card.cloneNode(true);
-      clone.classList.add('popup-card');
+  function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('.pinned-card:not(.dragging)')];
 
-      // Redirect logic for cloned cards
-      const url = card.dataset.url;
-      if (url && !card.classList.contains('expandable-card')) {
-        clone.addEventListener('click', (e) => {
-          if (!e.target.closest('.star-btn')) {
-            window.open(url, '_blank');
-          }
-        });
+    return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+
+      if (offset < 0 && offset > closest.offset) {
+        return { offset, element: child };
+      } else {
+        return closest;
       }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
 
-      popup.appendChild(clone);
-    });
+  function updatePinnedOrder() {
+    const newPinnedIds = [...container.querySelectorAll('.pinned-card')].map(card => card.dataset.id);
+    pinnedIds = newPinnedIds;
+    localStorage.setItem(PIN_KEY, JSON.stringify(pinnedIds));
+  }
 
-    overlay.appendChild(popup);
-    document.body.appendChild(overlay);
+  // ========== Helpers ==========
+  function addPinBadge(card) {
+    if (!card.querySelector('.pin-badge')) {
+      const badge = document.createElement('span');
+      badge.className = 'pin-badge';
+      badge.textContent = '📌 Pinned';
+      card.appendChild(badge);
+    }
+  }
 
-    // animate overlay in
-    await overlay.animate(
-      [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 300, fill: 'forwards' }
-    ).finished;
+  function removePinBadge(card) {
+    const badge = card.querySelector('.pin-badge');
+    if (badge) badge.remove();
+  }
 
-    // animate popup in
-    await popup.animate(
-      [{ transform: 'scale(0.8)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }],
-      { duration: 400, easing: 'ease-out', fill: 'forwards' }
-    ).finished;
-
-    // stagger the cards
-    popup.querySelectorAll('.popup-card').forEach((c, i) => {
-      c.animate(
-        [{ transform: 'scale(0.5)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }],
-        { duration: 400, easing: 'cubic-bezier(.5,1.5,.5,1)', fill: 'forwards', delay: i * 100 }
-      );
-    });
-
-    // closing logic
-    const closePopup = async () => {
-      await popup.animate(
-        [{ transform: 'scale(1)', opacity: 1 }, { transform: 'scale(0.8)', opacity: 0 }],
-        { duration: 300, fill: 'forwards' }
-      ).finished;
-      await overlay.animate(
-        [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 200, fill: 'forwards' }
-      ).finished;
-      overlay.remove();
-    };
-
-    closeBtn.addEventListener('click', closePopup);
-    overlay.addEventListener('click', evt => {
-      if (evt.target === overlay) closePopup();
-    });
-  });
+  renderCards();
 });

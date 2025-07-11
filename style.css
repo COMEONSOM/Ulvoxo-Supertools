@@ -1,34 +1,50 @@
-/* ================================
-   Root variables for theming
-   ================================ */
+/* ==========================================================
+   ULVOXO SUPERTOOLS v2.1 - CSS Framework (2025–2035 Ready)
+   Author: ULVOXO UI Core
+   Theme: Futuristic Minimal x Neon Intelligence
+========================================================== */
+
+/* -------------------------------
+   🌐 Root Tokens (Design System)
+-------------------------------- */
 :root {
-  /* Color Palette */
-  --clr-bg: hsl(228, 15%, 10%);
-  --clr-surface: hsla(0, 0%, 100%, 0.05);
+  /* Base Colors */
+  --clr-bg: hsl(228, 12%, 8%);
+  --clr-surface: hsla(0, 0%, 100%, 0.04);
   --clr-surface-hover: hsla(0, 0%, 100%, 0.08);
-  --clr-primary: hsl(280, 80%, 60%);
-  --clr-accent: hsl(200, 100%, 60%);
   --clr-text: hsl(0, 0%, 95%);
-  --clr-muted: hsl(0, 0%, 65%);
-  
-  /* Elevation & Borders */
-  --radius: 1.2rem;
-  --shadow-sm: 0 2px 6px hsla(0, 0%, 0%, 0.2);
-  --shadow-md: 0 4px 12px hsla(0, 0%, 0%, 0.3);
-  --shadow-lg: 0 8px 24px hsla(0, 0%, 0%, 0.4);
-  
+  --clr-muted: hsl(0, 0%, 60%);
+  --clr-primary: hsl(280, 100%, 65%);
+  --clr-accent: hsl(190, 100%, 60%);
+
+  /* Effects */
+  --radius-sm: 0.8rem;
+  --radius-md: 1.2rem;
+  --radius-xl: 2rem;
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.25);
+  --shadow-glow: 0 0 18px var(--clr-primary);
+
   /* Typography */
-  --ff-sans: 'Inter', system-ui, sans-serif;
+  --ff-main: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --fs-sm: clamp(0.9rem, 1vw, 1rem);
   --fs-base: clamp(1rem, 2vw, 1.1rem);
-  --fs-lg: clamp(1.3rem, 2.5vw, 1.8rem);
-  
-  /* Animation */
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --fs-lg: clamp(1rem, 1.5vw, 1rem);
+
+  /* Motion */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-med: 300ms;
+  --duration-slow: 600ms;
+
+  /* Layout */
+  --max-width: 1440px;
+  --grid-gap: 1.5rem;
 }
 
-/* ================================
-   Global Reset & Base Styles
-   ================================ */
+/* -------------------------------
+   🧼 Global Reset + Safety
+-------------------------------- */
 *,
 *::before,
 *::after {
@@ -37,196 +53,175 @@
   box-sizing: border-box;
 }
 
-html:focus-within {
+html, body {
   scroll-behavior: smooth;
-}
-
-body {
+  color-scheme: dark;
   background-color: var(--clr-bg);
-  color: var(--clr-text);
-  font-family: var(--ff-sans);
+  font-family: var(--ff-main);
   font-size: var(--fs-base);
   line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
 }
 
-.img-wrapper {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: var(--border-radius);
+/* Remove white dot issue */
+button {
+  all: unset;
+  cursor: pointer;
 }
 
-.img-wrapper img {
+button::before,
+button::after,
+::marker {
+  content: none !important;
+}
+
+img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  height: auto;
 }
-
 
 a {
-  text-decoration: none;
   color: inherit;
-  transition: color var(--transition);
+  text-decoration: none;
+  transition: color var(--duration-med) var(--ease);
 }
 
 a:hover {
   color: var(--clr-accent);
 }
 
-/* ================================
-   Header
-   ================================ */
+/* -------------------------------
+   🧠 Header
+-------------------------------- */
 .site-header {
-  align-items: left;
-  padding: 1rem;
+  padding: 1rem 2rem;
   background-color: var(--clr-surface);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  display: flex;
+  max-height: 96px;
+  align-items: center;
 }
 
 .site-logo {
-  max-width: 100px;
-  border-radius: 50%;
+  max-width: 96px;
+  height: 96px;
+  display: block;
+  filter: invert();
+  text-indent: 1px;
 }
-
-/* ================================
-   Cards Grid
-   ================================ */
+/* -------------------------------
+   🧱 Responsive Grid Layout
+-------------------------------- */
 .container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--grid-gap);
+  width: 100%;
+  max-width: var(--max-width);
+  padding: 2rem 1.5rem;
+  margin: 1 auto;
 }
 
-/* ================================
-   Card Component
-   ================================ */
+/* -------------------------------
+   🧩 Card Component
+-------------------------------- */
 .card {
-  background: var(--clr-surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
-  padding: 1.2rem;
-  text-align: center;
-  transition: var(--transition);
   position: relative;
-  overflow: hidden;
+  background: var(--clr-surface);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin: 15px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--duration-med) var(--ease), box-shadow var(--duration-med);
 }
 
 .card:hover {
-  background: var(--clr-surface-hover);
-  box-shadow: var(--shadow-lg);
+  background-color: var(--clr-surface-hover);
   transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--shadow-glow);
 }
 
 .card h2 {
   font-size: var(--fs-lg);
   color: var(--clr-primary);
-  margin: 0.5rem 0 1rem;
+  margin-bottom: 1rem;
 }
 
-.card .img-wrapper {
+/* 🖼 Image Wrapper */
+.img-wrapper {
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: var(--radius);
-}
-
-.card .img-wrapper img {
-  transition: transform 0.5s ease;
-  will-change: transform;
-}
-
-.card:hover .img-wrapper img {
-  transform: scale(1.1);
-}
-
-.pin-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: var(--clr-accent);
-  border: none;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: grid;
-  place-content: center;
-  color: var(--clr-bg);
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: var(--transition);
+  border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
 }
 
-.pin-btn:hover {
-  transform: scale(1.1);
-  box-shadow: var(--shadow-md);
-  background: var(--clr-primary);
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease);
 }
 
-.pinned-card {
-  background-color: var(--accent-color);
-  border: 2px solid var(--primary-color);
-  box-shadow: 0 0 15px rgba(249, 168, 212, 0.7);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.pinned-card.dragging {
-  opacity: 0.5;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
-.pin-badge {
+/* 📌 Pin Button */
+.pin-btn {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: var(--primary-color);
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: bold;
+  top: 15px;
+  right: 10px;
+  width: 2.6rem;
+  height: 2.6rem;
+  color: var(--clr-bg);
+  display: grid;
+  place-items: left;
+  font-size: 1.2rem;
 }
 
+.pin-btn:hover {
+  background: var(--clr-primary);
+  transform: scale(1.1);
+}
+
+/* 🌟 Pinned Card Style */
+.pinned-card {
+  border: 1px solid var(--clr-primary);
+  box-shadow: 0 0 16px var(--clr-accent);
+  animation: pinGlow 2s ease-in-out infinite alternate;
+}
 
 @keyframes pinGlow {
   from { box-shadow: 0 0 10px var(--clr-accent); }
   to { box-shadow: 0 0 20px var(--clr-primary); }
 }
 
-/* ================================
-   Expandable Card
-   ================================ */
+/* -------------------------------
+   🔽 Expandable Cards
+-------------------------------- */
 .expandable-card .container-in-container {
   margin-top: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  opacity: 0;
   max-height: 0;
+  opacity: 0;
   overflow: hidden;
-  transition: opacity 0.4s ease, max-height 0.6s ease;
+  transition: max-height 0.6s var(--ease), opacity 0.4s ease;
 }
 
 .expandable-card.open .container-in-container {
+  max-height: 600px;
   opacity: 1;
-  max-height: 500px;
 }
 
-/* ================================
-   Footer
-   ================================ */
+/* -------------------------------
+   📟 Footer
+-------------------------------- */
 .site-footer {
+  background-color: var(--clr-surface);
+  color: var(--clr-muted);
   text-align: center;
   padding: 1rem;
-  background-color: var(--clr-surface);
-  border-top: 1px solid hsla(0, 0%, 100%, 0.08);
-  color: var(--clr-muted);
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }

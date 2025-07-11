@@ -14,8 +14,8 @@
   --clr-surface-hover: hsla(0, 0%, 100%, 0.08);
   --clr-text: hsl(0, 0%, 95%);
   --clr-muted: hsl(0, 0%, 60%);
-  --clr-primary: hsl(280, 100%, 65%);
-  --clr-accent: hsl(190, 100%, 60%);
+  --clr-accent: hsl(280, 100%, 65%);
+  --clr-primary: hsl(190, 100%, 60%);
 
   /* Effects */
   --radius-sm: 0.8rem;
@@ -174,12 +174,14 @@ a:hover {
   height: 2.6rem;
   color: var(--clr-bg);
   display: grid;
+  background: fixed;
+  border-radius: 50%;
   place-items: left;
   font-size: 1.2rem;
 }
 
 .pin-btn:hover {
-  background: var(--clr-primary);
+  background: var(--clr-accent);
   transform: scale(1.1);
 }
 
